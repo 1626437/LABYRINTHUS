@@ -4,42 +4,37 @@
 --
 -----------------------------------------------------------------------------------------
 
-local _M = {} 
+local composer = require( "composer" )
+
+local scene = composer.newScene()
 
 --Variables--------------->
-
-local director = require("telas.director")
 
 local w = display.contentWidth -- representa a largura da tela
 local h = display.contentHeight -- altura da tela
 
-local j = 1
-
 -- Carrega a 'biblioteca' de fisica
-local physics = require ( "physics" )
-physics.start() -- Inicia a fisica
-physics.setGravity(0,0)
+
+local localGroup = display.newGroup()
 
 --Functions--------------->
 
 local touchEvent
-local freeMemory
--- Limpa a memoria do Grupo criado
-	freeMemory = function()
-		display.remove(localGroup)
-		localGroup = nil 
-	end
-
-
+local update
+local labirinto = display.newGroup()
 
 --Principal Function--------------------------------------------------------------------------->
 ----------------------------------------------------------------------------------------------->
-function _M.new()
 
-	local localGroup = display.newGroup()
+-- create()
+function scene:create( event )
+
+	local physics = require ( "physics" )
+	physics.start() -- Inicia a fisica
+	physics.setGravity(0,0)
 
 	--Posição de saída do jogo
-	local vitoria = display.newRect(390, 135, 40, 40)
+	local vitoria = display.newRect(localGroup, 390, 135, 40, 40)
 	vitoria:setFillColor(192,192,192)
 	physics.addBody(vitoria, "static")
 
@@ -53,90 +48,91 @@ function _M.new()
 	--------------//-----------//----------------//----------------
 	------- Mapa --------------
 	local wall = {} 
-	wall[1] = display.newRect(90, 04, 10, 155)
+
+	wall[1] = display.newRect(labirinto,90, 04, 10, 155)
 	wall[1]:setFillColor(0,0,0)
 	physics.addBody(wall[1], "static") 
-	wall[2] = display.newRect(390, 04, 10, 130)
+	wall[2] = display.newRect(labirinto,390, 04, 10, 130)
 	wall[2]:setFillColor(0,0,0)
 	physics.addBody(wall[2], "static") 
-	wall[22] = display.newRect(390, 190, 10, 110)
+	wall[22] = display.newRect(labirinto,390, 190, 10, 110)
 	wall[22]:setFillColor(0,0,0)
 	physics.addBody(wall[22], "static") 
-	wall[3] = display.newRect(90, 210, 10, 90)
+	wall[3] = display.newRect(labirinto,90, 210, 10, 90)
 	wall[3]:setFillColor(0,0,0)
 	physics.addBody(wall[3], "static") 
-	wall[4] = display.newRect(95, 04, 300, 10)
+	wall[4] = display.newRect(labirinto,95, 04, 300, 10)
 	wall[4]:setFillColor(0,0,0)
 	physics.addBody(wall[4], "static") 
-	wall[5] = display.newRect(95, 300, 305, 10)
+	wall[5] = display.newRect(labirinto,95, 300, 305, 10)
 	wall[5]:setFillColor(0,0,0)
 	physics.addBody(wall[5], "static") 
-	wall[6] = display.newRect(100, 130, 30, 10)
+	wall[6] = display.newRect(labirinto,100, 130, 30, 10)
 	wall[6]:setFillColor(0,0,0)
 	physics.addBody(wall[6], "static") 
-	wall[7] = display.newRect(130, 50, 10, 90)
+	wall[7] = display.newRect(labirinto,130, 50, 10, 90)
 	wall[7]:setFillColor(0,0,0)
 	physics.addBody(wall[7], "static") 
-	wall[8] = display.newRect(100, 210, 45, 10)
+	wall[8] = display.newRect(labirinto,100, 210, 45, 10)
 	wall[8]:setFillColor(0,0,0)
 	physics.addBody(wall[8], "static") 
-	wall[9] = display.newRect(140, 180, 10, 45)
+	wall[9] = display.newRect(labirinto,140, 180, 10, 45)
 	wall[9]:setFillColor(0,0,0)
 	physics.addBody(wall[9], "static") 
-	wall[10] = display.newRect(150, 180, 30, 10)
+	wall[10] = display.newRect(labirinto,150, 180, 30, 10)
 	wall[10]:setFillColor(0,0,0)
 	physics.addBody(wall[10], "static") 
-	wall[11] = display.newRect(180, 100, 10, 170)
+	wall[11] = display.newRect(labirinto,180, 100, 10, 170)
 	wall[11]:setFillColor(0,0,0)
 	physics.addBody(wall[11], "static") 
-	wall[12] = display.newRect(220, 145, 10, 125)
+	wall[12] = display.newRect(labirinto,220, 145, 10, 125)
 	wall[12]:setFillColor(0,0,0)
 	physics.addBody(wall[12], "static") 
-	wall[13] = display.newRect(190, 100, 30, 10)
+	wall[13] = display.newRect(labirinto,190, 100, 30, 10)
 	wall[13]:setFillColor(0,0,0)
 	physics.addBody(wall[13], "static") 
-	wall[14] = display.newRect(220, 60, 10, 50)
+	wall[14] = display.newRect(labirinto,220, 60, 10, 50)
 	wall[14]:setFillColor(0,0,0)
 	physics.addBody(wall[14], "static") 
-	wall[15] = display.newRect(130, 40, 50, 10)
+	wall[15] = display.newRect(labirinto,130, 40, 50, 10)
 	wall[15]:setFillColor(0,0,0)
 	physics.addBody(wall[15], "static") 
-	wall[16] = display.newRect(130, 260, 50, 10)
+	wall[16] = display.newRect(labirinto,130, 260, 50, 10)
 	wall[16]:setFillColor(0,0,0)
 	physics.addBody(wall[16], "static") 
-	wall[17] = display.newRect(230, 145, 70, 10)
+	wall[17] = display.newRect(labirinto,230, 145, 70, 10)
 	wall[17]:setFillColor(0,0,0)
 	physics.addBody(wall[17], "static") 
-	wall[18] = display.newRect(270, 14, 10, 135)
+	wall[18] = display.newRect(labirinto,270, 14, 10, 135)
 	wall[18]:setFillColor(0,0,0)
 	physics.addBody(wall[18], "static") 
-	wall[19] = display.newRect(230, 260, 40, 10)
+	wall[19] = display.newRect(labirinto,230, 260, 40, 10)
 	wall[19]:setFillColor(0,0,0)
 	physics.addBody(wall[19], "static") 
-	wall[20] = display.newRect(260, 225, 10, 35)
+	wall[20] = display.newRect(labirinto,260, 225, 10, 35)
 	wall[20]:setFillColor(0,0,0)
 	physics.addBody(wall[20], "static") 
-	wall[21] = display.newRect(260, 215, 70, 10)
+	wall[21] = display.newRect(labirinto,260, 215, 70, 10)
 	wall[21]:setFillColor(0,0,0)
 	physics.addBody(wall[21], "static") 
-	wall[23] = display.newRect(300, 275, 10, 25)
+	wall[23] = display.newRect(labirinto,300, 275, 10, 25)
 	wall[23]:setFillColor(0,0,0)
 	physics.addBody(wall[23], "static") 
-	wall[24] = display.newRect(280, 180, 120, 10)
+	wall[24] = display.newRect(labirinto,280, 180, 120, 10)
 	wall[24]:setFillColor(0,0,0)
 	physics.addBody(wall[24], "static") 
-	wall[25] = display.newRect(350, 60, 10, 120)
+	wall[25] = display.newRect(labirinto,350, 60, 10, 120)
 	wall[25]:setFillColor(0,0,0)
 	physics.addBody(wall[25], "static") 
-	wall[26] = display.newRect(310, 80, 40, 10)
+	wall[26] = display.newRect(labirinto, 310, 80, 40, 10)
 	wall[26]:setFillColor(0,0,0)
 	physics.addBody(wall[26], "static") 
 	------- Fim do Mapa -------
 	---------------//----------//-----------------//---------------
     ------- Cronometro ------
-    local secondsLeft = 45  -- 1 minutes * 60 seconds
+    local secondsLeft = 2  -- 1 minutes * 60 seconds
  
-	local clockText = display.newText( "00:45", display.contentCenterY-135, 30, native.systemFont, 22 )
+	local clockText = display.newText(localGroup, "00:02", display.contentCenterY-135, 30, native.systemFont, 22 )
 	clockText:setFillColor( 0.7, 0.7, 1 )
 	local function updateTime( event )
 	    -- Decrement the number of seconds
@@ -151,8 +147,8 @@ function _M.new()
 			--gameover.y = display.contentCenterY
 			
 			local test = function()
-				freeMemory()
-				director:changeScene("telas.menu")
+				composer.removeScene("fases")
+				composer.gotoScene("menu")
 			end
 			timer.performWithDelay(2000, test)
 		end	
@@ -310,7 +306,7 @@ function _M.new()
 			timer.performWithDelay(2000, test)
 	end
 
-	local update = function()
+	update = function()
 		player.x = player.x + xAxis
 		player.y = player.y + yAxis
 
@@ -334,14 +330,38 @@ function _M.new()
 
 	
 	Runtime:addEventListener("enterFrame", update)
-	------- Fim do Sprite -----------------
-	-----------//----------//--------------//---------------//-----------------
-	------- Codigo Principal ---------------
-	
-	
 
-	------ Fim do Codigo Principal --------------
-	return localGroup
 end
 
-return _M
+
+-- show()
+function scene:show( event )
+
+
+end
+
+
+-- hide()
+function scene:hide( event )
+  
+end
+
+
+-- destroy()
+function scene:destroy( event )
+	display.remove(localGroup)
+	display.remove(labirinto)
+	Runtime:removeEventListener( "enterFrame", update )
+end
+
+
+-- -----------------------------------------------------------------------------------
+-- Scene event function listeners
+-- -----------------------------------------------------------------------------------
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+-- -----------------------------------------------------------------------------------
+
+return scene

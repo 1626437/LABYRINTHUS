@@ -3,22 +3,17 @@
 -- menu.lua
 --
 -----------------------------------------------------------------------------------------
+local composer = require( "composer" )
 
-local _M = {}
+local scene = composer.newScene()
 
-----------------------Desenvolvimento da TELA----------------------
-function _M.new()
+local localGroup = display.newGroup()
+local w = display.contentWidth -- representa a largura da tela
+local h = display.contentHeight -- altura da tela
+local touchEvent
 
-	local director = require("telas.director")
-
-	local localGroup = display.newGroup()
-
-	-- Variaveis para chamar as funções
-	local touchEvent
-	local freeMemory
-
-	local w = display.contentWidth -- representa a largura da tela
-	local h = display.contentHeight -- altura da tela
+-- create()
+function scene:create( event )
 
 	-----------Codigo Principal----------------
 
@@ -50,21 +45,42 @@ function _M.new()
 	touchEvent = function(event)
 		local x = event.target
 		if x.myName == "play" then 
-			freeMemory()
-			director:changeScene("telas.fases")
+			composer.gotoScene("fases")
 		end
 	end
 
 	-- Limpa a memoria do Grupo criado
-	freeMemory = function()
-		display.remove(localGroup)
-		localGroup = nil 
-	end
 
 	buttons1:addEventListener("tap", touchEvent )
-
-	return localGroup
 end
----------------------------------------------------------------------------------
 
-return _M
+
+-- show()
+function scene:show( event )
+
+
+end
+
+
+-- hide()
+function scene:hide( event )
+  
+end
+
+
+-- destroy()
+function scene:destroy( event )
+	display.remove(localGroup)
+end
+
+
+-- -----------------------------------------------------------------------------------
+-- Scene event function listeners
+-- -----------------------------------------------------------------------------------
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+-- -----------------------------------------------------------------------------------
+
+return scene
