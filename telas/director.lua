@@ -21,7 +21,7 @@ function director:changeScene (moduleName)
             logo.x = w * .5
             logo.y = h * .5
 
-            transition.from(logo, {delay=300, time=300, alpha=0, xScale=.5, yScale=.5, transition=easing.outExpo})
+            transition.from(logo, {delay=300, time=400, alpha=0, xScale=.5, yScale=.5, transition=easing.outExpo})
             transition.from(background, {delay=400, time=300, alpha=0})
         end
     end
